@@ -30,10 +30,31 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+        // Log the exception
+        \Log::error('Exception in API request', [
+            'message' => $exception->getMessage(),
+            'exception' => $exception,
+            'trace' => $exception->getTraceAsString()
+        ]);
+
         if ($exception instanceof BadRequestException) {
             return response()->json([
                 'message' => $exception->getMessage(),
             ], 400);
+        }
+
+        // In debug mode, show full details
+        if (config('app.debug')) {
+            return response()->json([
+                'error' => true,
+                'message' => $exception->getMessage(),
+                'exception' => class_basename($exception),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => collect($exception->getTrace())->map(function($trace) {
+                    return $trace['file'] . ':' . $trace['line'];
+                })
+            ], 500);
         }
 
         // Default response for unexpected exceptions

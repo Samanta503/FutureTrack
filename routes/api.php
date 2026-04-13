@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Public routes
 Route::get('/health', [CareerController::class, 'health']);
-Route::get('/users/{id}', [CareerController::class, 'user']);
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/jobs', [CareerController::class, 'jobs']);
 Route::get('/courses', [CareerController::class, 'courses']);
 Route::get('/recommendations', [CareerController::class, 'recommendations']);
+Route::get('/users/{id}', [CareerController::class, 'user']);
+
+// Protected routes (require authentication)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('/auth/me', [AuthController::class, 'me']);
+});

@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\UsersController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\CareerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// Dummy CRUD operations for items using UsersController
-Route::get('/items', [UsersController::class, 'index']);
-Route::get('/items/{id}', [UsersController::class, 'show']);
-Route::post('/items', [UsersController::class, 'store']);
-Route::put('/items/{id}', [UsersController::class, 'update']);
-Route::patch('/items/{id}', [UsersController::class, 'patch']);
-Route::delete('/items/{id}', [UsersController::class, 'destroy']);
+Route::get('/health', [CareerController::class, 'health']);
+Route::get('/users/{id}', [CareerController::class, 'user']);
+Route::get('/jobs', [CareerController::class, 'jobs']);
+Route::get('/courses', [CareerController::class, 'courses']);
+Route::get('/recommendations', [CareerController::class, 'recommendations']);
